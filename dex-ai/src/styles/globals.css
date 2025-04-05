@@ -4,11 +4,19 @@
 @theme {
   --color-blue2: #1E857C;
   --color-textb: #555151;
+  --color-neutral: #E2E2E2;
 }
 
-body {
-  font-family: Arial, Helvetica, sans-serif;
+:root {
+  --font-ibm: 'IBM Plex Mono', monospace;
 }
+
+
+
+body {
+  font-family: var(--font-ibm);
+}
+
 
 
 
