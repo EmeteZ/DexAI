@@ -1,11 +1,14 @@
 @import "tailwindcss";
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
 
 
+@theme {
+  --color-blue2: #1E857C;
+  --color-textb: #555151;
+}
 
 body {
-
   font-family: Arial, Helvetica, sans-serif;
 }
+
+
+
