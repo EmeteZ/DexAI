@@ -1,5 +1,5 @@
-import InfosTopBar from '../navBar/InfosTopBar'
-import FunctionsBar from '../navBar/FunctionsBar'
+import InfosTopBar from './InfosTopBar'
+import FunctionsBar from './FunctionsBar'
 
 
 

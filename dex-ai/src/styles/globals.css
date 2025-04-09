@@ -5,12 +5,21 @@
   --color-blue2: #1E857C;
   --color-textb: #555151;
   --color-neutral: #E2E2E2;
+  --color-neutralb: #9D9797;
+}
+
+.shadow-inner-strong {
+  box-shadow: inset 0 4px 6px rgba(0, 0, 0, 0.4); 
 }
 
 :root {
   --font-ibm: 'IBM Plex Mono', monospace;
+  --font-lexend: 'Lexend Deca', sans-serif;
 }
 
+.font-lexend {
+  font-family: var(--font-lexend);
+}
 
 
 body {

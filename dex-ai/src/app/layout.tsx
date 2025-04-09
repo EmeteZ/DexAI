@@ -2,6 +2,8 @@ import type { Metadata } from "next";
 import { Geist, Geist_Mono } from "next/font/google";
 
 import "../styles/globals.css";
+import Navbar from "../components/NavBar/NavBar";
+import Footer from "../components/Footer/Footer";
 
 const geistSans = Geist({
   variable: "--font-geist-sans",
@@ -15,7 +17,7 @@ const geistMono = Geist_Mono({
 
 export const metadata: Metadata = {
   title: "Dex Ai",
-  description: "Aprenda tudo sobre pokemon!",
+  description: "Aprenda tudo sobre Pokémon!",
 };
 
 export default function RootLayout({
@@ -26,14 +28,21 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
+        className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen`}
       >
-        {children}
+        <Navbar />
 
+        <main className="flex-grow">
+          {children}
+        </main>
+
+        <Footer />
+
+       
         <link
-  href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&display=swap"
-  rel="stylesheet"
-/>
+          href="https://fonts.googleapis.com/css2?family=IBM+Plex+Mono:wght@400;500;700&display=swap"
+          rel="stylesheet"
+        />
       </body>
     </html>
   );

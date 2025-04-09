@@ -21,7 +21,7 @@ const links = [
 
 export default function InfosTopBar() {
   return (
-    <div className="px-6 flex items-center gap-8 bg-blue2 h-8 justify-end">
+    <div className="px-6 flex items-center gap-8 bg-blue2 h-9 justify-end">
       {links.map((item, index) => (
         <a
           key={index}
@@ -34,6 +34,7 @@ export default function InfosTopBar() {
           <span className="text-sm font-medium text-white">{item.label}</span>
         </a>
       ))}
+      
     </div>
   );
 }
