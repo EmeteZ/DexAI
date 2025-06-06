@@ -36,7 +36,7 @@ const Card = [
 
 export default function Cards() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen gap-8 mt-5">
+    <div className="flex flex-col items-center justify-center min-h-screen gap-8">
       <div className="flex flex-col items-center">
         <p className="text-4xl font-lexend font-semibold text-center">
           Explore o mundo Pokémon como nunca antes!
