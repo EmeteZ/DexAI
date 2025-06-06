@@ -6,7 +6,7 @@ const menuItems = [
   { label: "Pokedex", href: "/pokedex" },
   { label: "Batalha IA" },
   { label: "Top Pokémon", href: "/topPokemons" },
-  { label: "Quem é Esse?" },
+  { label: "Quem é Esse?", href:"/quizPokemon" },
 ];
 
 export default function FunctionsBar() {
