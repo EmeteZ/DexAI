@@ -53,7 +53,7 @@ export default function FunctionsBar() {
               key={item.label}
               href={item.href}
               className="flex items-center hover:opacity-80 transition-opacity"
-              style={{ minWidth: 80, height: "56px" }}
+              style={{ minWidth: 60, height: "56px" }}
             >
               <span className="nav-label text-sm font-medium text-textb cursor-pointer">
                 {item.label}
