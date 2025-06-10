@@ -1,18 +1,52 @@
 "use client";
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-const pokemons = [
-  { name: 'Charmander', image: '/assets/Images/Quiz/charmander.png' },
-  { name: 'Bulbasaur', image: '/assets/Images/Quiz/bulbasaur.png' },
-  { name: 'Squirtle', image: '/assets/Images/Quiz/squirtle.png' },
-  // Adicione mais pokémons conforme desejar
-];
+function shuffleArray(array: { name: any; image: any; }[]) {
+  const newArray = [...array];
+  for (let i = newArray.length - 1; i > 0; i--) {
+    const j = Math.floor(Math.random() * (i + 1));
+    [newArray[i], newArray[j]] = [newArray[j], newArray[i]];
+  }
+  return newArray;
+}
 
 export default function Quiz() {
+  const [pokemons, setPokemons] = useState<{ name: string; image: string }[]>([]);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [answer, setAnswer] = useState('');
   const [isCorrect, setIsCorrect] = useState<null | boolean>(null);
   const [showActiveImage, setShowActiveImage] = useState(false);
+  const [loading, setLoading] = useState(true);
+
+  // Busca e embaralha os pokémons da 1ª geração (IDs 1 a 151)
+  useEffect(() => {
+    const fetchPokemons = async () => {
+      const pokemonList = [];
+      for (let id = 1; id <= 300; id++) {
+        try {
+          const response = await fetch(`https://pokeapi.co/api/v2/pokemon/${id}`);
+          const data = await response.json();
+          pokemonList.push({
+            name: data.name,
+            image: data.sprites.other['official-artwork'].front_default
+          });
+        } catch (error) {
+          console.error(`Erro ao buscar Pokémon ${id}:`, error);
+        }
+      }
+      setPokemons(shuffleArray(pokemonList));
+      setLoading(false);
+    };
+    fetchPokemons();
+  }, []);
+
+  if (loading) {
+    return <div className="min-h-screen flex items-center justify-center">Carregando Pokémon...</div>;
+  }
+
+  if (pokemons.length === 0) {
+    return <div className="min-h-screen flex items-center justify-center">Nenhum Pokémon encontrado.</div>;
+  }
 
   const hiddenPokemon = pokemons[currentIndex];
 
@@ -21,7 +55,6 @@ export default function Quiz() {
     if (answer.trim().toLowerCase() === hiddenPokemon.name.toLowerCase()) {
       setIsCorrect(true);
       setShowActiveImage(true);
-      // Após 2 segundos, avança para o próximo pokémon e reseta estados
       setTimeout(() => {
         setShowActiveImage(false);
         setIsCorrect(null);
@@ -48,7 +81,7 @@ export default function Quiz() {
             placeholder="Digite o nome do Pokémon"
             value={answer}
             onChange={(e) => setAnswer(e.target.value)}
-            className="border border-gray-300 bg-white rounded-md p-2 w-full mb-4 focus:outline-none focus:ring-2 "
+            className="border border-gray-300 bg-white rounded-md p-2 w-full mb-4 focus:outline-none focus:ring-2"
             disabled={showActiveImage}
           />
           <button

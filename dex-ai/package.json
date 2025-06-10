@@ -9,7 +9,11 @@
     "lint": "next lint"
   },
   "dependencies": {
+    "@google/genai": "^1.4.0",
     "axios": "^1.8.4",
+    "cors": "^2.8.5",
+    "dotenv": "^16.5.0",
+    "express": "^5.1.0",
     "next": "15.2.4",
     "postcss": "^8.5.3",
     "react": "^19.0.0",
