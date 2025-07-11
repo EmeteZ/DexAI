@@ -18,7 +18,6 @@ export default function Quiz() {
   const [showActiveImage, setShowActiveImage] = useState(false);
   const [loading, setLoading] = useState(true);
 
-  // Busca e embaralha os pokémons da 1ª geração (IDs 1 a 151)
   useEffect(() => {
     const fetchPokemons = async () => {
       const pokemonList = [];
@@ -28,7 +27,7 @@ export default function Quiz() {
           const data = await response.json();
           pokemonList.push({
             name: data.name,
-            image: data.sprites.other['official-artwork'].front_default
+            image: data.sprites?.other?.['official-artwork']?.front_default
           });
         } catch (error) {
           console.error(`Erro ao buscar Pokémon ${id}:`, error);
@@ -66,6 +65,14 @@ export default function Quiz() {
     }
   };
 
+  // Função para trocar o Pokémon manualmente
+  const handleSkip = () => {
+    setShowActiveImage(false);
+    setIsCorrect(null);
+    setAnswer('');
+    setCurrentIndex((prev) => (prev + 1) % pokemons.length);
+  };
+
   return (
     <div className="min-h-screen flex flex-col items-center justify-center p-6">
       <h1 className="text-3xl font-bold mb-6 text-textb">Quem é esse Pokémon?</h1>
@@ -92,6 +99,13 @@ export default function Quiz() {
             Confirmar
           </button>
         </form>
+        <button
+          onClick={handleSkip}
+          className="mt-4 bg-gray-400 text-white font-semibold py-2 px-4 rounded-md hover:bg-gray-500 transition cursor-pointer"
+          disabled={showActiveImage}
+        >
+          Atualizar
+        </button>
         {isCorrect === true && (
           <p className="mt-4 text-green-600 font-semibold">Parabéns! Você acertou!</p>
         )}

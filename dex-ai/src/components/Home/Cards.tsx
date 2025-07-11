@@ -4,12 +4,6 @@ import WhoPokemon from "../../../public/assets/Images/whoPokemon.jpg";
 import SearchPokemon from "../../../public/assets/Images/searchPokemon.jpg";
 import Image from "next/image";
 
-// Adicione esta configuração no seu tailwind.config.js:
-/*
-
-  // ...
-}
-*/
 
 const Card = [
   {
@@ -42,7 +36,7 @@ export default function Cards() {
           Explore o mundo Pokémon como nunca antes!
         </p>
         <p className="text-2xl text-textb font-lexend text-center">
-          Veja stats, jogue com IA, filtre por tipo e muito mais.
+          Veja stats, simule com IA, descubra o pokemon e muito mais.
         </p>
       </div>
       <div className="flex flex-wrap justify-center gap-8 mt-5 bg-neutral rounded-2xl p-6">
