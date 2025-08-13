@@ -30,7 +30,7 @@ const Card = [
 
 export default function Cards() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen gap-8">
+    <div className="flex flex-col items-center justify-center min-h-screen gap-6">
       <div className="flex flex-col items-center">
         <p className="text-4xl font-lexend font-semibold text-center">
           Explore o mundo Pokémon como nunca antes!
@@ -39,11 +39,11 @@ export default function Cards() {
           Veja stats, simule com IA, descubra o pokemon e muito mais.
         </p>
       </div>
-      <div className="flex flex-wrap justify-center gap-8 mt-5 bg-neutral rounded-2xl p-6">
+      <div className="flex flex-wrap justify-center gap-5 mt-5 bg-neutral rounded-2xl p-6">
         {Card.map((card) => (
           <div
             key={card.label1}
-            className="flex flex-col items-center justify-between w-72 h-80 bg-white rounded-2xl shadow p-4 transition-transform duration-200 hover:scale-105 hover:animate-pop-out cursor-pointer"
+            className="flex flex-col items-center justify-between w-69 h-80 bg-white rounded-2xl shadow p-4 transition-transform duration-200 hover:scale-105 hover:animate-pop-out cursor-pointer"
           >
             <Image
               src={card.image}

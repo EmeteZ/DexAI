@@ -1,10 +1,11 @@
 "use client";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
+import Image from "next/image";
 
 const menuItems = [
   { label: "Pokedex", href: "/pokedex" },
-  { label: "Batalha IA" },
+  { label: "Batalha IA", href: "/battleIA" },
   { label: "Top Pokémon", href: "/topPokemons" },
   { label: "Quem é Esse?", href:"/quizPokemon" },
 ];
@@ -40,10 +41,12 @@ export default function FunctionsBar() {
       </style>
       <div className="h-14 bg-neutral flex items-center px-4 gap-8">
         <Link href="/">
-          <img
+          <Image
             src="/assets/logos/LogoDexAI.svg"
             alt="Logo"
             className="w-32 h-32 cursor-pointer hover:scale-108 transition-transform"
+            width={132}
+            height={132}
           />
         </Link>
         {menuItems.map((item) => {

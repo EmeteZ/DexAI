@@ -15,6 +15,7 @@
 :root {
   --font-ibm: 'IBM Plex Mono', monospace;
   --font-lexend: 'Lexend Deca', sans-serif;
+   font-family: var(--font-ibm-plex-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
 .font-lexend {
