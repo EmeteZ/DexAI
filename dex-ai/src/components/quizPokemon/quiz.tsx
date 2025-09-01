@@ -1,22 +1,28 @@
-"use client";
+"use client"; // Indica que o componente roda no cliente (Next.js)
+
 import React, { useState, useEffect, useRef, useCallback } from "react";
 import Image from "next/image";
 
+// Tipo de cada Pokémon no quiz
 type PokemonItem = { name: string; image: string };
 
+// Função para embaralhar um array
 function shuffleArray<T>(array: T[]): T[] {
   return [...array].sort(() => Math.random() - 0.5);
 }
 
+// Componente principal do Quiz
 export default function Quiz() {
-  const [pokemons, setPokemons] = useState<PokemonItem[]>([]);
-  const [currentIndex, setCurrentIndex] = useState(0);
-  const [answer, setAnswer] = useState("");
-  const [isCorrect, setIsCorrect] = useState<null | boolean>(null);
-  const [showActiveImage, setShowActiveImage] = useState(false);
-  const [loading, setLoading] = useState(true);
-  const abortRef = useRef<AbortController | null>(null);
+  // Estados do componente
+  const [pokemons, setPokemons] = useState<PokemonItem[]>([]); // Lista de Pokémons
+  const [currentIndex, setCurrentIndex] = useState(0); // Índice do Pokémon atual
+  const [answer, setAnswer] = useState(""); // Resposta digitada
+  const [isCorrect, setIsCorrect] = useState<null | boolean>(null); // Se a resposta está correta
+  const [showActiveImage, setShowActiveImage] = useState(false); // Mostra a imagem colorida quando acerta
+  const [loading, setLoading] = useState(true); // Loading enquanto busca Pokémons
+  const abortRef = useRef<AbortController | null>(null); // AbortController para cancelar fetchs
 
+  // Avança para o próximo Pokémon
   const nextPokemon = useCallback(() => {
     setShowActiveImage(false);
     setIsCorrect(null);
@@ -24,6 +30,7 @@ export default function Quiz() {
     setCurrentIndex((prev) => (prev + 1) % pokemons.length);
   }, [pokemons.length]);
 
+  // Busca os Pokémons ao montar o componente
   useEffect(() => {
     const controller = new AbortController();
     abortRef.current?.abort();
@@ -32,10 +39,11 @@ export default function Quiz() {
     async function fetchPokemons() {
       try {
         setLoading(true);
-        const ids = Array.from({ length: 300 }, (_, i) => i + 1);
+        const ids = Array.from({ length: 300 }, (_, i) => i + 1); // IDs dos Pokémons
         const batchSize = 30;
         const list: PokemonItem[] = [];
 
+        // Busca os Pokémons em lotes para não sobrecarregar
         for (let i = 0; i < ids.length; i += batchSize) {
           const batch = ids.slice(i, i + batchSize);
           const settled = await Promise.allSettled(
@@ -55,7 +63,7 @@ export default function Quiz() {
           });
         }
 
-        setPokemons(shuffleArray(list));
+        setPokemons(shuffleArray(list)); // Embaralha Pokémons
         setCurrentIndex(0);
       } catch (e) {
         if ((e as Error)?.name !== "AbortError") {
@@ -68,17 +76,20 @@ export default function Quiz() {
     }
 
     fetchPokemons();
-    return () => controller.abort();
+    return () => controller.abort(); // Cancela fetch ao desmontar
   }, []);
 
+  // Exibe tela de loading
   if (loading)
     return <div className="min-h-screen flex items-center justify-center">Carregando Pokémon...</div>;
 
+  // Exibe mensagem se nenhum Pokémon foi encontrado
   if (!pokemons.length)
     return <div className="min-h-screen flex items-center justify-center">Nenhum Pokémon encontrado.</div>;
 
-  const hiddenPokemon = pokemons[currentIndex];
+  const hiddenPokemon = pokemons[currentIndex]; // Pokémon atual
 
+  // Verifica a resposta do usuário
   const handleSubmit = (e: React.FormEvent) => {
     e.preventDefault();
     if (!hiddenPokemon) return;
@@ -87,8 +98,8 @@ export default function Quiz() {
     setIsCorrect(correct);
 
     if (correct) {
-      setShowActiveImage(true);
-      setTimeout(nextPokemon, 2000);
+      setShowActiveImage(true); // Mostra imagem colorida
+      setTimeout(nextPokemon, 2000); // Passa para próximo Pokémon após 2s
     }
   };
 
@@ -96,6 +107,7 @@ export default function Quiz() {
     <div className="min-h-screen flex flex-col items-center justify-center p-6">
       <h1 className="text-3xl font-bold mb-6 text-textb">Quem é esse Pokémon?</h1>
 
+      {/* Card do Pokémon */}
       <div className="bg-neutral rounded-xl shadow-lg p-6 max-w-md w-full flex flex-col items-center">
         <div className="w-48 h-48 mb-6 relative">
           {hiddenPokemon?.image ? (
@@ -114,6 +126,7 @@ export default function Quiz() {
           )}
         </div>
 
+        {/* Formulário para digitar a resposta */}
         <form onSubmit={handleSubmit} className="w-full flex flex-col items-center">
           <input
             type="text"
@@ -124,26 +137,25 @@ export default function Quiz() {
             disabled={showActiveImage}
           />
           <div className="">
-          <button
-            type="submit"
-            className="mr-5 btn py-2 px-4 "
-            disabled={showActiveImage}
-          >
-            Confirmar
-          </button>
+            <button
+              type="submit"
+              className="mr-5 btn py-2 px-4"
+              disabled={showActiveImage}
+            >
+              Confirmar
+            </button>
 
-           <button
-          onClick={nextPokemon}
-          className="mt-4 btn-neutral bg-gray-900"
-          disabled={showActiveImage}
-        >
-          Atualizar
-        </button>
-</div>
+            <button
+              onClick={nextPokemon}
+              className="mt-4 btn-neutral bg-gray-900"
+              disabled={showActiveImage}
+            >
+              Atualizar
+            </button>
+          </div>
         </form>
 
-       
-
+        {/* Mensagens de feedback */}
         {isCorrect === true && <p className="mt-4 text-green-600 font-semibold">Parabéns! Você acertou!</p>}
         {isCorrect === false && <p className="mt-4 text-red-600 font-semibold">Tente novamente!</p>}
       </div>

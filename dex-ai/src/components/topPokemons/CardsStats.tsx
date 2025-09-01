@@ -3,9 +3,8 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
-// -------------------------
+
 // Tipos e Helpers
-// -------------------------
 interface Pokemon {
   id: number;
   name: string;
@@ -32,9 +31,11 @@ interface PokemonCard {
   value: number;
 }
 
+// Função para pegar o valor de um stat específico
 const getStatValue = (stats: Stat[], statName: string) =>
   stats.find((s) => s.stat.name === statName)?.base_stat ?? 0;
 
+// Função de fetch com retries e backoff
 async function fetchWithRetry(
   input: RequestInfo,
   init?: RequestInit,
@@ -60,9 +61,8 @@ async function fetchWithRetry(
   throw lastErr instanceof Error ? lastErr : new Error("Falha de rede");
 }
 
-// -------------------------
-// Config de Stats
-// -------------------------
+
+// Configuração dos stats
 const STAT_CONFIG = [
   { key: "hp", label: "HP", title: "Melhores em HP", color: "text-red-400" },
   { key: "attack", label: "ATK", title: "Melhores em Ataque", color: "text-orange-500" },
@@ -72,13 +72,12 @@ const STAT_CONFIG = [
   { key: "speed", label: "Speed", title: "Melhores em Velocidade", color: "text-pink-500" },
 ];
 
-// -------------------------
-// Component Principal
-// -------------------------
+
+// Componente principal
 export default function CardsStats() {
-  const [tops, setTops] = useState<Record<string, PokemonCard[]>>({});
-  const [loading, setLoading] = useState(true);
-  const abortRef = useRef<AbortController | null>(null);
+  const [tops, setTops] = useState<Record<string, PokemonCard[]>>({}); // Armazena top 10 por stat
+  const [loading, setLoading] = useState(true); // Loading geral
+  const abortRef = useRef<AbortController | null>(null); // AbortController para cancelar fetchs
 
   useEffect(() => {
     abortRef.current?.abort();
@@ -89,7 +88,7 @@ export default function CardsStats() {
       try {
         setLoading(true);
 
-        // 1) Buscar lista paginada
+        // 1) Buscar lista paginada de Pokémons
         const allResults: { name: string; url: string }[] = [];
         const totalToFetch = 1000;
         const pageSize = 200;
@@ -129,7 +128,7 @@ export default function CardsStats() {
           settled.forEach((s) => s.status === "fulfilled" && details.push(s.value));
         }
 
-        // 3) Montar os tops
+        // 3) Montar os tops 10 por stat
         const newTops: Record<string, PokemonCard[]> = {};
         STAT_CONFIG.forEach(({ key }) => {
           newTops[key] = [...details]
@@ -154,12 +153,11 @@ export default function CardsStats() {
     }
 
     fetchAll();
-    return () => controller.abort();
+    return () => controller.abort(); // Cancela fetchs ao desmontar
   }, []);
 
-  // -------------------------
-  // UI Helpers
-  // -------------------------
+
+  // Helpers de UI
   const Placeholder = () => (
     <div className="w-12 h-12 rounded-full bg-gray-100 border border-gray-200" aria-label="Sem sprite" />
   );
@@ -201,9 +199,8 @@ export default function CardsStats() {
     </div>
   );
 
-  // -------------------------
+
   // Render
-  // -------------------------
   return (
     <div className="flex align-center m-6 flex-col">
       <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-3 gap-10 w-full justify-center">

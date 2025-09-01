@@ -1,15 +1,16 @@
+// Importa imagens que serão usadas nos cards
 import BattlePokemon from "../../../public/assets/Images/battlePokemon.jpg";
 import ComparePokemons from "../../../public/assets/Images/ComparePokemons.jpeg";
 import WhoPokemon from "../../../public/assets/Images/whoPokemon.jpg";
 import SearchPokemon from "../../../public/assets/Images/searchPokemon.jpg";
-import Image from "next/image";
+import Image from "next/image"; // Importa o componente Image do Next.js
 
-
+// Array com os dados de cada card
 const Card = [
   {
-    image: BattlePokemon,
-    label1: "Simule batalhas com IA",
-    label2: "Com a nossa IA você é capaz de simular batalhas entre nossos Pokémons!",
+    image: BattlePokemon, // Imagem do card
+    label1: "Simule batalhas com IA", // Título do card
+    label2: "Com a nossa IA você é capaz de simular batalhas entre nossos Pokémons!", // Descrição do card
   },
   {
     image: ComparePokemons,
@@ -28,9 +29,11 @@ const Card = [
   },
 ];
 
+// Componente Cards que renderiza os cards na tela
 export default function Cards() {
   return (
     <div className="flex flex-col items-center justify-center min-h-screen gap-6">
+      {/* Título e subtítulo da seção */}
       <div className="flex flex-col items-center">
         <p className="text-4xl font-lexend font-semibold text-center">
           Explore o mundo Pokémon como nunca antes!
@@ -39,20 +42,24 @@ export default function Cards() {
           Veja stats, simule com IA, descubra o pokemon e muito mais.
         </p>
       </div>
+
+      {/* Container que renderiza todos os cards */}
       <div className="flex flex-wrap justify-center gap-5 mt-5 bg-neutral rounded-2xl p-6">
         {Card.map((card) => (
           <div
-            key={card.label1}
+            key={card.label1} // Chave única para cada card
             className="flex flex-col items-center justify-between w-69 h-80 bg-white rounded-2xl shadow p-4 transition-transform duration-200 hover:scale-105 hover:animate-pop-out cursor-pointer"
           >
+            {/* Imagem do card */}
             <Image
               src={card.image}
-              alt={card.label1}
+              alt={card.label1} // Texto alternativo
               className="rounded-xl mb-2 object-cover"
               width={240}
               height={140}
               style={{ objectFit: "cover" }}
             />
+            {/* Título e descrição do card */}
             <div className="flex flex-col text-left flex-1 w-full">
               <p className="text-xl font-semibold font-lexend mb-2">{card.label1}</p>
               <p className="text-sm font-semibold text-textb font-lexend break-words whitespace-normal">

@@ -1,6 +1,8 @@
-@import "tailwindcss";
+@import "tailwindcss"; /* Importa Tailwind CSS */
 
-
+/* -------------------------
+   Variáveis de tema
+------------------------- */
 @theme {
   --color-blue2: #1E857C;
   --color-textb: #555151;
@@ -8,25 +10,33 @@
   --color-neutralb: #9D9797;
 }
 
+/* Sombra interna mais forte */
 .shadow-inner-strong {
   box-shadow: inset 0 4px 6px rgba(0, 0, 0, 0.4); 
 }
 
+/* -------------------------
+   Fontes
+------------------------- */
 :root {
   --font-ibm: 'IBM Plex Mono', monospace;
   --font-lexend: 'Lexend Deca', sans-serif;
-   font-family: var(--font-ibm-plex-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-family: var(--font-ibm-plex-mono), ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
 }
 
+/* Classe utilitária para Lexend */
 .font-lexend {
   font-family: var(--font-lexend);
 }
 
-
+/* Fonte padrão do body */
 body {
   font-family: var(--font-ibm);
 }
 
+/* -------------------------
+   Botões principais
+------------------------- */
 .btn {
   padding: 0.4rem 0.7rem; 
   border-radius: 0.60rem; 
@@ -49,7 +59,7 @@ body {
   transform: scale(0.95);
 }
 
-
+/* Botões neutros */
 .btn-neutral {
   padding: 0.4rem 0.7rem;
   border-radius: 0.75rem;
@@ -71,6 +81,9 @@ body {
   transform: scale(0.95);
 }
 
+/* -------------------------
+   Inputs
+------------------------- */
 .input {
   background-color: #e2e2e280;
   border-radius: 0.75rem;
@@ -79,13 +92,9 @@ body {
   border-color: #63616185;
   outline: none; 
   transition: border-color 0.2s ease, box-shadow 0.2s ease;
-  color: var(--color-textb) ;
+  color: var(--color-textb);
 }
 
 .input:focus {
   border-color: #3cbdb28e;
 }
-
-
-
-

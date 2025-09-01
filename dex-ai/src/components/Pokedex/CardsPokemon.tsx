@@ -1,9 +1,10 @@
-"use client";
+"use client"; // Indica que este componente roda no cliente (Next.js)
 
 import { useEffect, useRef, useState, useMemo } from "react";
 import Image from "next/image";
 import { typeColors, typeBackgrounds, typeList } from "@/components/Pokedex/ColorsPokemon";
 
+// Interface para tipar os dados de cada Pokémon
 interface Pokemon {
   id: number;
   name: string;
@@ -11,6 +12,7 @@ interface Pokemon {
   types: { type: { name: string } }[];
 }
 
+// Componente SVG da Pokébola (fallback caso a imagem do Pokémon não carregue)
 const PokeballIcon = () => (
   <svg width="60" height="60" viewBox="0 0 60 60" fill="none">
     <circle cx="30" cy="30" r="28" stroke="#222" strokeWidth="4" fill="#fff" />
@@ -20,20 +22,22 @@ const PokeballIcon = () => (
   </svg>
 );
 
+// Componente principal de Cards de Pokémon
 export default function CardsPokemon() {
-  const [allUrls, setAllUrls] = useState<{ name: string; url: string }[]>([]);
-  const [pokemonCache, setPokemonCache] = useState<Map<string, Pokemon>>(new Map());
-  const [visibleCount, setVisibleCount] = useState(50);
-  const [pokemons, setPokemons] = useState<Pokemon[]>([]);
-  const [searchTerm, setSearchTerm] = useState("");
-  const [selectedType, setSelectedType] = useState("all");
-  const [loadingList, setLoadingList] = useState(false);
-  const [loadingMore, setLoadingMore] = useState(false);
-  const [imgError, setImgError] = useState<Record<number, boolean>>({});
-  const bottomRef = useRef<HTMLDivElement | null>(null);
-  const lastVisibleCountRef = useRef<number>(visibleCount);
+  // Estados do componente
+  const [allUrls, setAllUrls] = useState<{ name: string; url: string }[]>([]); // URLs de todos os Pokémons
+  const [pokemonCache, setPokemonCache] = useState<Map<string, Pokemon>>(new Map()); // Cache de detalhes dos Pokémons
+  const [visibleCount, setVisibleCount] = useState(50); // Quantos Pokémons exibir
+  const [pokemons, setPokemons] = useState<Pokemon[]>([]); // Lista de Pokémons exibidos
+  const [searchTerm, setSearchTerm] = useState(""); // Filtro de busca
+  const [selectedType, setSelectedType] = useState("all"); // Tipo selecionado
+  const [loadingList, setLoadingList] = useState(false); // Carregando lista
+  const [loadingMore, setLoadingMore] = useState(false); // Carregando mais Pokémons
+  const [imgError, setImgError] = useState<Record<number, boolean>>({}); // Marca se houve erro na imagem
+  const bottomRef = useRef<HTMLDivElement | null>(null); // Referência para scroll automático
+  const lastVisibleCountRef = useRef<number>(visibleCount); // Guarda último valor de visibleCount
 
-  // Buscar lista ao trocar tipo
+  // Buscar lista de URLs quando muda o tipo selecionado
   useEffect(() => {
     const controller = new AbortController();
     const { signal } = controller;
@@ -56,24 +60,22 @@ export default function CardsPokemon() {
         }
 
         setAllUrls(results);
-        setVisibleCount(50);
-        setPokemonCache(new Map()); // limpa cache
-        setPokemons([]); // limpa lista
-        setImgError({});
+        setVisibleCount(50); // Reseta contador de visíveis
+        setPokemonCache(new Map()); // Limpa cache
+        setPokemons([]); // Limpa lista
+        setImgError({}); // Limpa erros de imagem
       } catch (e) {
-        if ((e as Error)?.name !== "AbortError") {
-          console.error("Erro ao buscar lista:", e);
-        }
+        if ((e as Error)?.name !== "AbortError") console.error("Erro ao buscar lista:", e);
       } finally {
         setLoadingList(false);
       }
     }
 
     fetchUrlsByType();
-    return () => controller.abort();
+    return () => controller.abort(); // Cancela fetch se componente desmontar
   }, [selectedType]);
 
-  // URLs a exibir
+  // Filtra URLs a exibir baseado na busca ou quantidade visível
   const urlsExibir = useMemo(() => {
     if (searchTerm.trim()) {
       const termo = searchTerm.toLowerCase();
@@ -88,7 +90,7 @@ export default function CardsPokemon() {
     return allUrls.slice(0, visibleCount).map((p) => p.url);
   }, [allUrls, visibleCount, searchTerm]);
 
-  // Buscar detalhes incrementalmente
+  // Busca os detalhes dos Pokémons incrementalmente
   useEffect(() => {
     const controller = new AbortController();
     const { signal } = controller;
@@ -101,7 +103,7 @@ export default function CardsPokemon() {
         return;
       }
 
-      const missing = urls.filter((url) => !pokemonCache.has(url));
+      const missing = urls.filter((url) => !pokemonCache.has(url)); // Verifica quais Pokémons não estão no cache
       const newEntries: [string, Pokemon][] = [];
       const batchSize = 20;
 
@@ -118,10 +120,9 @@ export default function CardsPokemon() {
             })
           );
 
+          // Adiciona ao cache apenas os que foram carregados com sucesso
           settled.forEach((s, idx) => {
-            if (s.status === "fulfilled") {
-              newEntries.push([batch[idx], s.value]);
-            }
+            if (s.status === "fulfilled") newEntries.push([batch[idx], s.value]);
           });
         }
 
@@ -142,13 +143,9 @@ export default function CardsPokemon() {
           setPokemons(lista);
         }
       } catch (e) {
-        if ((e as Error)?.name !== "AbortError") {
-          console.error("Erro ao buscar detalhes:", e);
-        }
+        if ((e as Error)?.name !== "AbortError") console.error("Erro ao buscar detalhes:", e);
       } finally {
-        if (!cancelled) {
-          setLoadingMore(false);
-        }
+        if (!cancelled) setLoadingMore(false);
       }
     }
 
@@ -166,7 +163,7 @@ export default function CardsPokemon() {
     };
   }, [urlsExibir, pokemonCache]);
 
-  // Auto-scroll
+  // Auto-scroll ao carregar mais Pokémons
   useEffect(() => {
     if (visibleCount > lastVisibleCountRef.current && !searchTerm) {
       bottomRef.current?.scrollIntoView({ behavior: "smooth", block: "end" });
@@ -176,7 +173,7 @@ export default function CardsPokemon() {
 
   return (
     <div className="flex flex-col mt-10 items-center">
-      {/* Filtros */}
+      {/* Filtros de busca e tipo */}
       <div className="flex gap-4 mb-6 w-full max-w-4xl">
         <input
           type="text"
@@ -199,7 +196,7 @@ export default function CardsPokemon() {
         </select>
       </div>
 
-      {/* Lista */}
+      {/* Lista de Pokémons */}
       {loadingList && pokemons.length === 0 ? (
         <div className="flex items-center justify-center py-8">
           <p className="text-gray-500">Carregando...</p>
@@ -225,6 +222,7 @@ export default function CardsPokemon() {
                   key={pokemon.id}
                   className="flex flex-col px-5 py-4 bg-neutral/25 border border-black/15 rounded-2xl items-center shadow-sm hover:shadow-md transition-shadow duration-200 w-full max-w-xs"
                 >
+                  {/* Imagem do Pokémon ou Pokébola caso não carregue */}
                   <div
                     className={`w-36 h-36 flex items-center justify-center mb-4 rounded-full overflow-hidden shadow-inner ${backgroundClass}`}
                   >
@@ -243,12 +241,16 @@ export default function CardsPokemon() {
                       />
                     )}
                   </div>
+
+                  {/* ID e nome */}
                   <p className="text-xs text-gray-500 mb-1">
                     #{String(pokemon.id).padStart(3, "0")}
                   </p>
                   <p className="text-base font-semibold text-gray-900 capitalize text-center">
                     {pokemon.name}
                   </p>
+
+                  {/* Tipos do Pokémon */}
                   <div className="text-sm text-gray-600 mt-1">
                     <span>Tipo: </span>
                     {pokemon.types.map((type, index) => (
@@ -265,12 +267,14 @@ export default function CardsPokemon() {
             })}
           </div>
 
+          {/* Mensagem se nenhum Pokémon for encontrado */}
           {pokemons.length === 0 && !loadingList && !loadingMore && searchTerm && (
             <div className="flex items-center justify-center py-8">
               <p className="text-gray-500">Nenhum Pokémon encontrado</p>
             </div>
           )}
 
+          {/* Botão de carregar mais */}
           {!searchTerm && visibleCount < allUrls.length && (
             <button
               onClick={() => setVisibleCount((v) => Math.min(v + 50, allUrls.length))}
@@ -280,7 +284,7 @@ export default function CardsPokemon() {
               {loadingMore ? "Carregando..." : "Carregar mais"}
             </button>
           )}
-          <div ref={bottomRef} />
+          <div ref={bottomRef} /> {/* Referência para scroll automático */}
         </>
       )}
     </div>
