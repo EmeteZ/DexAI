@@ -1,20 +1,14 @@
-import type { Metadata } from "next"; // Tipo para metadata da página
-import { Geist, Geist_Mono } from "next/font/google"; // Importa fontes do Google
+import type { Metadata } from "next"; 
+import { Inter } from "next/font/google"; // Fonte do Google
 
-import "../styles/globals.css"; // Estilos globais
-import Navbar from "../components/navBar/NavBar"; // Componente Navbar
-import Footer from "../components/Footer/Footer"; // Componente Footer
+import "../styles/globals.css"; 
+import Navbar from "../components/navBar/NavBar"; 
+import Footer from "../components/Footer/Footer";
 
-// Configura Geist Sans como variável CSS
-const geistSans = Geist({
-  variable: "--font-geist-sans",
+// Configura a fonte Inter como variável CSS
+const inter = Inter({
   subsets: ["latin"],
-});
-
-// Configura Geist Mono como variável CSS
-const geistMono = Geist_Mono({
-  variable: "--font-geist-mono",
-  subsets: ["latin"],
+  variable: "--font-inter",
 });
 
 // Metadata da aplicação (Next.js)
@@ -22,7 +16,7 @@ export const metadata: Metadata = {
   title: "Dex Ai",
   description: "Aprenda tudo sobre Pokémon!",
   icons: {
-    icon: '/assets/Logos/IconeLogo.png', 
+    icon: "/assets/Logos/IconeLogo.png",
   },
 };
 
@@ -35,19 +29,16 @@ export default function RootLayout({
   return (
     <html lang="en">
       <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased flex flex-col min-h-screen`}
+        className={`${inter.variable} antialiased flex flex-col min-h-screen`}
       >
         {/* Navbar no topo */}
         <Navbar />
 
         {/* Área principal da página */}
-        <main className="flex-grow">
-          {children}
-        </main>
+        <main className="flex-grow">{children}</main>
 
         {/* Footer no final */}
         <Footer />
-
       </body>
     </html>
   );
