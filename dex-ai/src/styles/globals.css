@@ -27,8 +27,64 @@ body {
   font-family: var(--font-ibm);
 }
 
+.btn {
+  padding: 0.4rem 0.7rem; 
+  border-radius: 0.60rem; 
+  font-weight: 600;
+  transition: all 0.3s ease-in-out;
+  background-color: var(--color-blue2);
+  color: white;
+  box-shadow: 0 2px 4px rgba(0, 0, 0, 0.2);
+  font-family: var(--font-lexend);
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.btn:hover {
+  background-color: #155e58; 
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.25);
+}
+
+.btn:active {
+  transform: scale(0.95);
+}
 
 
+.btn-neutral {
+  padding: 0.4rem 0.7rem;
+  border-radius: 0.75rem;
+  font-weight: 600;
+  transition: all 0.3s ease-in-out;
+  background-color: var(--color-neutralb);
+  color: white;
+  font-family: var(--font-lexend);
+  cursor: pointer;
+  font-size: 0.9rem;
+}
+
+.btn-neutral:hover {
+  background-color: #636161;
+  color: white;
+}
+
+.btn-neutral:active {
+  transform: scale(0.95);
+}
+
+.input {
+  background-color: #e2e2e280;
+  border-radius: 0.75rem;
+  padding: 0.6rem;
+  border: 1px solid;
+  border-color: #63616185;
+  outline: none; 
+  transition: border-color 0.2s ease, box-shadow 0.2s ease;
+  color: var(--color-textb) ;
+}
+
+.input:focus {
+  border-color: #3cbdb28e;
+}
 
 
 
