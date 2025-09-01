@@ -5,6 +5,32 @@ import React, { useState } from "react"; // Lib de UI e gerenciamento de estado.
 import { GoogleGenAI } from "@google/genai"; // Cliente da API do Google Gemini.
 import ReactMarkdown from "react-markdown"; // Componente para renderizar Markdown.
 
+// Interfaces para tipagem
+interface PokemonStat {
+  stat: {
+    name: string;
+  };
+  base_stat: number;
+}
+
+interface PokemonType {
+  type: {
+    name: string;
+  };
+}
+
+interface PokemonApiResponse {
+  name: string;
+  stats: PokemonStat[];
+  types: PokemonType[];
+}
+
+interface PokemonData {
+  name: string;
+  stats: Record<string, number>;
+  types: string[];
+}
+
 // Carrega a API key das variáveis de ambiente.
 const apiKey = process.env.NEXT_PUBLIC_GOOGLE_GEMINI_API_KEY;
 
@@ -25,15 +51,15 @@ export default function Combat() {
   const [error, setError] = useState("");
 
   // Busca e formata os dados de um Pokémon via PokeAPI.
-  async function fetchPokemonStats(name: string) {
+  async function fetchPokemonStats(name: string): Promise<PokemonData> {
     const response = await fetch(
       `https://pokeapi.co/api/v2/pokemon/${name.toLowerCase()}`
     );
     if (!response.ok) throw new Error(`Pokémon ${name} não encontrado.`);
 
-    const data = await response.json();
+    const data: PokemonApiResponse = await response.json();
     const stats: Record<string, number> = {};
-    data.stats.forEach((stat: any) => {
+    data.stats.forEach((stat: PokemonStat) => {
       stats[stat.stat.name] = stat.base_stat;
     });
 
@@ -41,7 +67,7 @@ export default function Combat() {
     return {
       name: data.name,
       stats,
-      types: data.types.map((t: any) => t.type.name),
+      types: data.types.map((t: PokemonType) => t.type.name),
     };
   }
 
@@ -111,8 +137,12 @@ export default function Combat() {
       });
 
       setResponseText(response.text || "Sem resposta da IA.");
-    } catch (err: any) {
-      setError(err.message || "Erro ao processar a simulação.");
+    } catch (err: unknown) {
+      if (err instanceof Error) {
+        setError(err.message);
+      } else {
+        setError("Erro ao processar a simulação.");
+      }
     } finally {
       setLoading(false);
     }
