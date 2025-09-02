@@ -3,7 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import Image from "next/image";
 
-
 // Tipos e Helpers
 interface Pokemon {
   id: number;
@@ -61,7 +60,6 @@ async function fetchWithRetry(
   throw lastErr instanceof Error ? lastErr : new Error("Falha de rede");
 }
 
-
 // Configuração dos stats
 const STAT_CONFIG = [
   { key: "hp", label: "HP", title: "Melhores em HP", color: "text-red-400" },
@@ -72,12 +70,11 @@ const STAT_CONFIG = [
   { key: "speed", label: "Speed", title: "Melhores em Velocidade", color: "text-pink-500" },
 ];
 
-
 // Componente principal
 export default function CardsStats() {
-  const [tops, setTops] = useState<Record<string, PokemonCard[]>>({}); // Armazena top 10 por stat
-  const [loading, setLoading] = useState(true); // Loading geral
-  const abortRef = useRef<AbortController | null>(null); // AbortController para cancelar fetchs
+  const [tops, setTops] = useState<Record<string, PokemonCard[]>>({});
+  const [loading, setLoading] = useState(true);
+  const abortRef = useRef<AbortController | null>(null);
 
   useEffect(() => {
     abortRef.current?.abort();
@@ -153,17 +150,26 @@ export default function CardsStats() {
     }
 
     fetchAll();
-    return () => controller.abort(); // Cancela fetchs ao desmontar
+    return () => controller.abort();
   }, []);
-
 
   // Helpers de UI
   const Placeholder = () => (
     <div className="w-12 h-12 rounded-full bg-gray-100 border border-gray-200" aria-label="Sem sprite" />
   );
 
-  const StatTable = ({ title, data, statLabel, starColor }: { title: string; data: PokemonCard[]; statLabel: string; starColor: string }) => (
-    <div className="flex flex-col px-4 py-4 bg-neutral h-auto w-96 rounded-xl items-center shadow-lg p-5 pt-5">
+  const StatTable = ({
+    title,
+    data,
+    statLabel,
+    starColor,
+  }: {
+    title: string;
+    data: PokemonCard[];
+    statLabel: string;
+    starColor: string;
+  }) => (
+    <div className="flex flex-col px-4 py-4 bg-neutral h-auto w-full sm:w-72 md:w-80 lg:w-96 rounded-xl items-center shadow-lg">
       <p className="text-sm font-medium text-gray mb-2 ml-2">{title}</p>
       <div className="scrollbar-thin scrollbar-thumb-gray-300 scrollbar-track-gray-100 w-full max-h-80 p-2 overflow-y-auto">
         {loading ? (
@@ -175,21 +181,35 @@ export default function CardsStats() {
               className="relative flex h-14 w-full rounded-xl shadow bg-white items-center pl-4 pr-4 mb-3"
             >
               {idx === 0 && (
-                <span className={`absolute -top-2 -left-2 ${starColor} text-xl drop-shadow-lg`} title={`Maior ${statLabel}`}>
+                <span
+                  className={`absolute -top-2 -left-2 ${starColor} text-xl drop-shadow-lg`}
+                  title={`Maior ${statLabel}`}
+                >
                   ★
                 </span>
               )}
               <div className="w-12 h-12 bg-neutralb/50 rounded-full flex items-center justify-center overflow-hidden">
                 {pokemon.sprite ? (
-                  <Image src={pokemon.sprite} alt={pokemon.name} width={48} height={48} className="w-12 h-12 object-contain" draggable={false} unoptimized />
+                  <Image
+                    src={pokemon.sprite}
+                    alt={pokemon.name}
+                    width={48}
+                    height={48}
+                    className="w-12 h-12 object-contain"
+                    draggable={false}
+                    unoptimized
+                  />
                 ) : (
                   <Placeholder />
                 )}
               </div>
-              <p className="text-sm font-semibold text-gray-700 ml-4 capitalize w-24 truncate">{pokemon.name}</p>
+              <p className="text-sm font-semibold text-gray-700 ml-4 capitalize w-24 truncate">
+                {pokemon.name}
+              </p>
               <div className="flex-1 flex justify-end">
                 <p className={`text-sm font-bold tracking-wide ${starColor}`}>
-                  {pokemon.value} <span className="font-normal text-gray-600">{statLabel}</span>
+                  {pokemon.value}{" "}
+                  <span className="font-normal text-gray-600">{statLabel}</span>
                 </p>
               </div>
             </div>
@@ -199,13 +219,18 @@ export default function CardsStats() {
     </div>
   );
 
-
   // Render
   return (
     <div className="flex align-center m-6 flex-col">
-      <div className="grid grid-cols-2 md:grid-cols-3 xl:grid-cols-3 gap-10 w-full justify-center">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 xl:grid-cols-3 gap-6 w-full justify-center">
         {STAT_CONFIG.map(({ key, label, title, color }) => (
-          <StatTable key={key} title={title} data={tops[key] ?? []} statLabel={label} starColor={color} />
+          <StatTable
+            key={key}
+            title={title}
+            data={tops[key] ?? []}
+            statLabel={label}
+            starColor={color}
+          />
         ))}
       </div>
     </div>

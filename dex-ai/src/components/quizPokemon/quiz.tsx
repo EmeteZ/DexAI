@@ -104,7 +104,7 @@ export default function Quiz() {
   };
 
   return (
-    <div className="min-h-screen flex flex-col items-center justify-center p-6">
+    <div className=" mt-8 flex flex-col items-center justify-center p-6">
       <h1 className="text-3xl font-bold mb-6 text-textb">Quem é esse Pokémon?</h1>
 
       {/* Card do Pokémon */}

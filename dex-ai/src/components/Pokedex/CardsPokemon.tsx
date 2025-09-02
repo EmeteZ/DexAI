@@ -174,7 +174,7 @@ export default function CardsPokemon() {
   return (
     <div className="flex flex-col mt-10 items-center">
       {/* Filtros de busca e tipo */}
-      <div className="flex gap-4 mb-6 w-full max-w-4xl">
+      <div className="flex gap-4 p-5 mb-6 w-full justify-center max-w-4xl">
         <input
           type="text"
           placeholder="Buscar Pokémon (nome ou ID)"
@@ -185,8 +185,8 @@ export default function CardsPokemon() {
         <select
           value={selectedType}
           onChange={(e) => setSelectedType(e.target.value)}
-          className="p-2 w-2/5 input"
-        >
+          className=" md:w-2/5 w-25 input"
+        > 
           <option value="all">Todos os Tipos</option>
           {typeList.filter((t) => t !== "all").map((type) => (
             <option key={type} value={type}>
