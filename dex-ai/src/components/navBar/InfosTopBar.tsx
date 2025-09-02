@@ -7,12 +7,12 @@ import { useState } from "react";
 // Lista com os links a serem exibidos
 const links = [
   {
-    icon: <FaGithub className="text-white w-4 h-4" />,
+    icon: <FaGithub className="text-white md:w-4 md:h-4 w-3 h-3" />,
     label: "GitHub",
     href: "https://github.com/EmeteZ/DexAI",
   },
   {
-    icon: <FaLinkedin className="text-white w-4 h-4" />,
+    icon: <FaLinkedin className="text-white md:w-4 md:h-4 w-3 h-3" />,
     label: "Linkedin",
     href: "https://www.linkedin.com/in/matheus-macedo-697591207/",
   },
@@ -36,7 +36,7 @@ export default function InfosTopBar() {
             className="flex items-center gap-2 hover:opacity-80 transition-opacity"
           >
             {item.icon}
-            <span className="text-sm font-medium text-white">{item.label}</span>
+            <span className="md:text-sm text-xs font-medium text-white">{item.label}</span>
           </a>
         ))}
 
@@ -45,8 +45,8 @@ export default function InfosTopBar() {
           onClick={() => setIsOpen(true)}
           className="flex items-center gap-2 hover:opacity-80 transition-opacity"
         >
-          <TbInfoSquareRoundedFilled className="text-white w-4 h-4" />
-          <span className="text-sm font-medium text-white cursor-pointer">
+          <TbInfoSquareRoundedFilled className="text-white md:w-4 md:h-4 w-3 h-3" />
+          <span className="md:text-sm text-xs font-medium text-white cursor-pointer">
             Sobre o Projeto
           </span>
         </button>

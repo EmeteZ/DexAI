@@ -1,23 +1,24 @@
-"use client"; // Indica que este componente será renderizado no cliente
-import Link from "next/link"; // Importa Link do Next.js para navegação interna
-import { usePathname } from "next/navigation"; // Hook para obter a rota atual
-import Image from "next/image"; // Componente de imagem do Next.js
+"use client";
+import Link from "next/link";
+import { usePathname } from "next/navigation";
+import Image from "next/image";
+import { useState } from "react";
+import { Menu, X } from "lucide-react"; // Ícones para mobile
 
-// Lista dos itens do menu com label e rota
+// Lista dos itens do menu
 const menuItems = [
   { label: "Pokedex", href: "/pokedex" },
   { label: "Batalha IA", href: "/battleIA" },
   { label: "Top Pokémon", href: "/topPokemons" },
-  { label: "Quem é Esse?", href:"/quizPokemon" },
+  { label: "Quem é Esse?", href: "/quizPokemon" },
 ];
 
-// Componente da barra de funções / menu
 export default function FunctionsBar() {
-  const pathname = usePathname(); // Pega a rota atual
+  const pathname = usePathname();
+  const [isOpen, setIsOpen] = useState(false); // Estado do menu mobile
 
   return (
     <>
-      {/* Estilos CSS inline para underline nos links */}
       <style>
         {`
           .nav-label {
@@ -43,50 +44,69 @@ export default function FunctionsBar() {
         `}
       </style>
 
-      {/* Container da barra de funções */}
-      <div className="h-14 bg-neutral flex items-center px-4 gap-8">
-        {/* Logo que redireciona para a página inicial */}
+      {/* Navbar principal */}
+      <div className="h-14 bg-neutral flex items-center justify-between md:justify-start px-4">
+        {/* Logo */}
         <Link href="/">
           <Image
             src="/assets/logos/LogoDexAI.svg"
             alt="Logo"
-            className="w-32 h-32 cursor-pointer hover:scale-108 transition-transform"
-            width={132}
-            height={132}
+            className="w-30 h-30 md:mr-15 cursor-pointer hover:scale-105 transition-transform"
+            width={120}
+            height={120}
           />
         </Link>
 
-        {/* Mapeia os itens do menu */}
-        {menuItems.map((item) => {
-          const isActive = item.href && pathname === item.href; // Checa se a rota atual é a do item
-          return item.href ? (
-            // Renderiza Link se houver href
-            <Link
-              key={item.label}
-              href={item.href}
-              className="flex items-center hover:opacity-80 transition-opacity"
-              style={{ minWidth: 60, height: "56px" }}
-            >
-              <span className="nav-label text-sm font-medium text-textb cursor-pointer">
-                {item.label}
-                {/* Underline ativo se a rota estiver ativa */}
-                {isActive && <span className="nav-underline" />}
-              </span>
-            </Link>
-          ) : (
-            // Renderiza apenas um span se não houver href
-            <span
-              key={item.label}
-              className="flex items-center hover:opacity-80 transition-opacity"
-              style={{ minWidth: 80, height: "56px" }}
-            >
-              <span className="nav-label text-sm font-medium text-textb cursor-pointer">
-                {item.label}
-              </span>
-            </span>
-          );
-        })}
+        {/* Botão Mobile */}
+        <button
+          className="md:hidden text-textb"
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          {isOpen ? <X size={28} /> : <Menu size={28} />}
+        </button>
+
+        {/* Menu Desktop */}
+        <div className="hidden md:flex gap-6">
+          {menuItems.map((item) => {
+            const isActive = item.href && pathname === item.href;
+            return (
+              <Link
+                key={item.label}
+                href={item.href}
+                className="flex items-center hover:opacity-80 transition-opacity"
+                style={{ minWidth: 60, height: "56px" }}
+              >
+                <span className="nav-label text-sm font-medium text-textb cursor-pointer">
+                  {item.label}
+                  {isActive && <span className="nav-underline" />}
+                </span>
+              </Link>
+            );
+          })}
+        </div>
       </div>
+
+      {/* Menu Mobile (dropdown) */}
+      {isOpen && (
+        <div className="md:hidden flex flex-col bg-neutral px-4 pb-3">
+          {menuItems.map((item) => {
+            const isActive = item.href && pathname === item.href;
+            return (
+              <Link
+                key={item.label}
+                href={item.href}
+                onClick={() => setIsOpen(false)} // Fecha ao clicar
+                className="py-2 border-b border-gray-300"
+              >
+                <span className="nav-label text-sm font-medium text-textb cursor-pointer">
+                  {item.label}
+                  {isActive && <span className="nav-underline" />}
+                </span>
+              </Link>
+            );
+          })}
+        </div>
+      )}
     </>
   );
 }
