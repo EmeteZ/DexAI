@@ -56,7 +56,7 @@ export default function InfosTopBar() {
       {isOpen && (
         <div className="fixed inset-0 bg-black/50 backdrop-blur-sm flex items-center justify-center z-50">
           {/* Conteúdo do modal. */}
-          <div className="bg-white rounded-xl shadow-2xl w-130 max-w-full p-5 text-center">
+          <div className="bg-white m-7 rounded-xl shadow-2xl w-120 max-w-full p-5 text-center">
             <h2 className="text-base font-semibold text-textb mb-3">Saiba mais</h2>
             <div className="text-sm text-gray-600">
   <h1>Resumo do Projeto DexAI</h1>

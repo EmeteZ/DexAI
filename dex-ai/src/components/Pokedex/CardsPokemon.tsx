@@ -220,11 +220,11 @@ export default function CardsPokemon() {
               return (
                 <div
                   key={pokemon.id}
-                  className="flex flex-col px-5 py-4 bg-neutral/25 border border-black/15 rounded-2xl items-center shadow-sm hover:shadow-md transition-shadow duration-200 w-full max-w-xs"
+                  className="flex flex-col px-5 py-4 bg-neutral/25 border border-black/15 rounded-2xl items-center shadow-sm hover:shadow-md transition-shadow duration-200 w-full max-w-xs md:h-auto h-60"
                 >
                   {/* Imagem do Pokémon ou Pokébola caso não carregue */}
                   <div
-                    className={`w-36 h-36 flex items-center justify-center mb-4 rounded-full overflow-hidden shadow-inner ${backgroundClass}`}
+                    className={`md:w-36 md:h-36 w-30 flex items-center justify-center mb-4 rounded-full overflow-hidden shadow-inner ${backgroundClass}`}
                   >
                     {!pokemon.sprites.front_default || imgError[pokemon.id] ? (
                       <PokeballIcon />
@@ -251,11 +251,11 @@ export default function CardsPokemon() {
                   </p>
 
                   {/* Tipos do Pokémon */}
-                  <div className="text-sm text-gray-600 mt-1">
+                  <div className="md:text-sm text-xs text-gray-600 mt-1">
                     <span>Tipo: </span>
                     {pokemon.types.map((type, index) => (
                       <span key={type.type.name}>
-                        <span className={`font-medium ${typeColors[type.type.name] || "text-gray-700"}`}>
+                        <span className={`md:font-medium text-xs ${typeColors[type.type.name] || "text-gray-700"}`}>
                           {type.type.name.charAt(0).toUpperCase() + type.type.name.slice(1)}
                         </span>
                         {index < pokemon.types.length - 1 && ", "}

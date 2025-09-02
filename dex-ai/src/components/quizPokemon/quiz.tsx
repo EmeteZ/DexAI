@@ -39,7 +39,7 @@ export default function Quiz() {
     async function fetchPokemons() {
       try {
         setLoading(true);
-        const ids = Array.from({ length: 300 }, (_, i) => i + 1); // IDs dos Pokémons
+        const ids = Array.from({ length: 151 }, (_, i) => i + 1); // IDs dos Pokémons
         const batchSize = 30;
         const list: PokemonItem[] = [];
 
