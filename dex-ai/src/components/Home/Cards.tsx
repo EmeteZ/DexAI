@@ -32,7 +32,7 @@ const Card = [
 // Componente Cards que renderiza os cards na tela
 export default function Cards() {
   return (
-    <div className="flex flex-col items-center justify-center min-h-screen gap-6">
+    <div className="flex flex-col items-center justify-center gap-6">
       {/* Título e subtítulo da seção */}
       <div className="flex flex-col p-2 items-center">
         <p className="md:text-4xl text-2xl font-lexend font-semibold text-center">
@@ -44,11 +44,11 @@ export default function Cards() {
       </div>
 
       {/* Container que renderiza todos os cards */}
-      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 justify-items-center lg:grid-cols-4 gap-6 mt-5 bg-neutral rounded-2xl p-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 justify-items-center lg:grid-cols-4 gap-2 mt-5 bg-neutral rounded-2xl w-full p-6">
         {Card.map((card) => (
           <div
             key={card.label1}
-            className="flex flex-col items-center justify-between md:w-5/6 w-4/6 h-80 bg-white rounded-2xl shadow p-4 transition-transform duration-200 hover:scale-105 hover:animate-pop-out cursor-pointer"
+            className="flex flex-col items-center m-3 justify-between md:w-70 w-4/6 h-80 bg-white rounded-2xl shadow p-4 transition-transform duration-200 hover:scale-105 hover:animate-pop-out cursor-pointer"
           >
             {/* Imagem do card */}
             <Image

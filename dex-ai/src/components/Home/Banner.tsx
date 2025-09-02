@@ -39,7 +39,7 @@ export default function Banner() {
 
   return (
     <div
-      className="flex relative w-full bg-black/20 md:h-56 h-40 overflow-hidden shadow-inner-strong items-center justify-center"
+      className="flex relative w-full bg-black/20 md:h-50 h-40 overflow-hidden shadow-inner-strong items-center justify-center"
       onMouseMove={handleMouseMove}
       onMouseLeave={handleMouseLeave}
       style={{ cursor: "pointer" }}
@@ -50,7 +50,7 @@ export default function Banner() {
           alt="Charizard"
           width={6000}
           height={1000}
-          className="w-auto md:h-56 h-40 object-cover object-center"
+          className="w-auto md:h-50 h-40 object-cover object-center"
           style={{
             willChange: "transform",
             transition: "transform 0.5s cubic-bezier(.25,.8,.25,1)",
